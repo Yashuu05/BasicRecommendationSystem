@@ -1,4 +1,4 @@
-# *Serive Provider Recommendation System*
+# *Service Provider Recommendation System*
 
 ---
 
