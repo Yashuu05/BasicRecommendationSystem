@@ -6,8 +6,7 @@ import seaborn as sns
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.pipelines.model_pipelines import prepare_model_pipeline
 from src.utils.data_utils import load_data, save_data, prepare_data_for_split, split_dataset
-from sklearn.metrics import mean_absolute_error, mean_squared_error, root_mean_squared_error
-from src.utils.model_utils import save_model, evaluate_model
+from src.utils.model_utils import save_model, evaluate_model, best_model
 
 def train_model(model_lst, X_train, y_train, X_test, y_test):
     # dictionary to store peformance of each model
@@ -35,6 +34,8 @@ def train_model(model_lst, X_train, y_train, X_test, y_test):
         performance["mae"].append(mae)
         performance["mse"].append(mse)
         performance["rmse"].append(rmse)
+        # update model_lst with trained models
+        model_lst[name] = model
         # plot scatter plot
         plt.scatter(y_test, y_pred, label=name, alpha=0.6)
 
@@ -47,14 +48,30 @@ def train_model(model_lst, X_train, y_train, X_test, y_test):
     plt.title("Actual vs Predicted (All Models)")
     plt.legend()
     # save the image
+    print("\nsaving image...")
     image_file_path = os.path.join(os.path.dirname(__file__), '..', '..', 'models', 'results', 'performance.png')
     file_path = os.path.join(os.path.dirname(__file__), '..', '..', 'models', 'results', 'model_performance.csv')
+    
+    # Ensure directories exist
+    os.makedirs(os.path.dirname(image_file_path), exist_ok=True)
+    
     plt.savefig(image_file_path)
+    plt.close() # Close plot to free memory
+    
     # save the performance od trained model
-    performance = pd.DataFrame(performance, columns=['model_name','mae','mse','rmse'])
-    performance.to_csv(file_path, index=False)
-
-
+    print("\nsaving performace data...")
+    performance_df = pd.DataFrame(performance, columns=['model_name','mae','mse','rmse'])
+    performance_df.to_csv(file_path, index=False)
+    # find best model
+    print("\nfinding best model...")
+    SCORE, NAME, MODEL = best_model(model_lst, performance_df, "rmse")
+    print(f"\nbest model score:{SCORE}\nmodel name: {NAME}")
+    # save only best model
+    print("saving best model")
+    save_model_path = os.path.join(os.path.dirname(__file__), '..', '..', 'models', 'saved', 'best_model.pkl')
+    os.makedirs(os.path.dirname(save_model_path), exist_ok=True)
+    save_model(model=MODEL, path=save_model_path)
+    print("\n============= Finished training =============")
 if __name__ == "__main__":
     # load dataset
     file_path = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'processed', 'clean_price_prediction.csv')
@@ -68,11 +85,12 @@ if __name__ == "__main__":
     # non_ordinal
     non_ordinal_cols = ['issue','device','brand','service_type','warranty_status']
     # num cols
-    num_cols = ['device_age_years','technician_experien']
+    num_cols = ['device_age_years','technician_experience']
     # build pipeline
     model_lst = prepare_model_pipeline(
         non_ordinal_cols=non_ordinal_cols,
         ordinal_cols=ordinal_cols,
-        num_cols=num_cols)
+        num_cols=num_cols,
+        scoring_param="neg_mean_absolute_error")
     # train model
     train_model(model_lst=model_lst, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test)

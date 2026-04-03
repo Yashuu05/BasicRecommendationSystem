@@ -1,6 +1,6 @@
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 
 def create_pipeline(non_ordinal_cols, num_cols, ordinal_cols, model):
@@ -12,7 +12,7 @@ def create_pipeline(non_ordinal_cols, num_cols, ordinal_cols, model):
 
     non_ordinal_preprocessor = Pipeline(steps=[
         ('impute', SimpleImputer(strategy="most_frequent")),
-        ('labelencode', LabelEncoder())
+        ('ordinalencode', OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1))
     ])
 
     num_preprocessor = Pipeline(steps=[
