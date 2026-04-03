@@ -1,6 +1,16 @@
 # *Service Provider Recommendation System*
 
-### About:
+[![Python Version](https://img.shields.io/badge/Python-3.8%2B-green.svg)](https://www.python.org/)
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/Yashuu05/BasicRecommendationSystem/actions)
+[![Contributors](https://img.shields.io/badge/Contributors-1-blue.svg)](CONTRIBUTORS.md)
+
+## 📋 Table of Contents
+
+- [About](#about)
+
+---
+
+## About:
 - This project implements *basic recommendation system* using fictional and synthetic dataset which recommends user with service providers availble in electronic market.
 
 - It uses two machine learning layers to recommend *service* and predict the *price*(in INR) respectively using [scikit-learn](https://scikit-learn.org/stable/user_guide.html) library and machine learning algorithms for both _Regression_ and _classification_ such as :
@@ -15,6 +25,7 @@
 - [RMSE](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.root_mean_squared_error.html)
 
 ---
+
 ### *status: Active*
 
 ---
