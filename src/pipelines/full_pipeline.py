@@ -61,11 +61,12 @@ def run_full_pipeline(user_text, price_model, recommend_model):
     print(f"predicted price is INR {price}")
 
     # step 3: generate providers
+    print("step 3")
     print("generating providers...")
     providers = generate_providers(n=8)
 
     # step 4: prepare data for recommendation
-    print("\nstep 4: recommendatio ranking...")
+    print("\nstep 4: recommendation ranking...")
 
     rec_input = []
     for provider in providers:
@@ -81,14 +82,14 @@ def run_full_pipeline(user_text, price_model, recommend_model):
     df = pd.DataFrame(rec_input)
 
     ranked = predict_recommendation(input_data=df, model=recommend_model, top_k=3)
-    print("\n✅ Final Recommendation:\n") 
+    print("\nFinal Recommendation:\n") 
     result = [] 
     for _, row in ranked.iterrows(): 
         result.append({ "provider_name": row["provider_name"], 
                        "rating": row["rating"], 
                        "distance_km": row["distance_km"], 
                        "score": round(row["score"], 2), 
-                       "estimated_price": price 
+                       "estimated_price": float(price) 
                     }) 
         
     return { "input": user_text, "parsed": nlp_result, "estimated_price": price, "top_providers": result } 
