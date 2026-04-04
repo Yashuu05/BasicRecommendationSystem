@@ -6,7 +6,7 @@ import seaborn as sns
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.pipelines.model_pipelines import prepare_model_pipeline
 from src.utils.data_utils import load_data, save_data, prepare_data_for_split, split_dataset
-from src.utils.model_utils import save_model, evaluate_model, best_model
+from src.utils.model_utils import save_model, evaluate_regression_model, best_model
 
 def train_model(model_lst, X_train, y_train, X_test, y_test):
     # dictionary to store peformance of each model
@@ -28,7 +28,7 @@ def train_model(model_lst, X_train, y_train, X_test, y_test):
         print("predicting target...")
         y_pred = model.predict(X_test)
         # evaluate performance
-        mae, mse, rmse = evaluate_model(y_test=y_test, y_pred=y_pred)
+        mae, mse, rmse = evaluate_regression_model(y_test=y_test, y_pred=y_pred)
         # store the metrics into performance list
         performance["model_name"].append(name)
         performance["mae"].append(mae)
@@ -91,6 +91,7 @@ if __name__ == "__main__":
         non_ordinal_cols=non_ordinal_cols,
         ordinal_cols=ordinal_cols,
         num_cols=num_cols,
+        type="regression",
         scoring_param="neg_mean_absolute_error")
     # train model
     train_model(model_lst=model_lst, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test)
