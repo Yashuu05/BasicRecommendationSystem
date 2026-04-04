@@ -40,5 +40,5 @@ def extract_entities(text):
         "issue":issue,
         "device": device,
         "severity": severity,
-        "urgency": urgency
+        "urgent": urgency
     }

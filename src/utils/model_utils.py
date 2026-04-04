@@ -2,6 +2,7 @@ import joblib
 import os
 from sklearn.metrics import mean_absolute_error, mean_squared_error, root_mean_squared_error
 from sklearn.metrics import accuracy_score, f1_score, recall_score, roc_auc_score
+import pandas as pd
 
 def save_model(model, path):
     """
@@ -77,3 +78,56 @@ def best_model(model_lst, peformance_lst, metric, type):
 
     except Exception as e:
         print(f"error: {e}")
+        return None
+
+def predict_price(input_data, model):
+    """
+    This function is responsible for predicting price 
+    Input: user input
+    output: predicted price
+    """
+    input_data = pd.DataFrame([input_data])
+    predicted_price = model.predict(input_data)
+    return predicted_price[0]
+
+def predict_recommendation(input_data, model, top_k=3):
+    """
+    Predict and rank service providers based on input features.
+    Args:
+        input_data (pd.DataFrame): Data containing provider + user features
+        model_path (str): Path to trained model
+        top_k (int): Number of top providers to return
+    Returns:
+        pd.DataFrame: Top ranked providers
+    """
+
+    # Copy Data 
+    df = input_data.copy()
+
+    # Save provider name separately
+    provider_names = df["provider_name"]
+
+    # Drop non-ML columns
+    if "provider_name" in df.columns:
+        df = df.drop(columns=["provider_name"], axis=1)
+
+    expected_columns = [
+        "issue", "device", "severity", "urgent",
+        "rating", "num_reviews", "success_rate", "experience_years",
+        "distance_km", "response_time_min", "base_price",
+        "service_type", "availability"
+    ]
+    df = df[expected_columns]
+
+    # Predict Probabilities
+    scores = model.predict_proba(df)[:, 1]
+
+    # Attach Scores
+    result_df = input_data.copy()
+    result_df["score"] = scores
+
+    # Sort Providers
+    ranked = result_df.sort_values(by="score", ascending=False)
+
+    # Return Top K
+    return ranked.head(top_k).reset_index(drop=True)
