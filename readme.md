@@ -4,12 +4,6 @@
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/Yashuu05/BasicRecommendationSystem/actions)
 [![Contributors](https://img.shields.io/badge/Contributors-1-blue.svg)](CONTRIBUTORS.md)
 
-## 📋 Table of Contents
-
-- [About](#about)
-
----
-
 ## About
 
 - This project is an AI-powered service recommendation system that helps users find the best local technicians (e.g., laptop repair, WiFi setup, CCTV installation) based on their problem description.
@@ -189,11 +183,11 @@ cd BasicRecommendationSystem
 
 1. *Recommendation Model*
 
-![Recommendation analysis](models/results/recommendation_performance.png)
+![Recommendation model analysis](assets/recommend_analyse.png)
 
 2. *Price Prediction Model*
 
-![Price Prediction](models/results/price_performance.png)
+![Price Prediction model Analysis](assets/price_prediction_analyse.png)
 
 #### Hyperparameters Used
 
