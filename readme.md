@@ -41,6 +41,8 @@
 4. Recommendation model ranks best providers
 5. User receives top recommendations with estimated pricing
 
+![system architecture](assets/system_architecture.png)
+
 ---
 
 ## Objectives
