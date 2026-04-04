@@ -189,7 +189,11 @@ cd BasicRecommendationSystem
 
 1. *Recommendation Model*
 
-[Recommendation analysis]("models/results/recommendation_result.png")
+![Recommendation analysis](models/results/recommendation_performance.png)
+
+2. *Price Prediction Model*
+
+![Price Prediction](models/results/price_performance.png)
 
 #### Hyperparameters Used
 
