@@ -2,7 +2,61 @@
 <head>
     <title>Basic Recommendation System</title>
 </head>
-<body>
-    <h1 style="text-align: center;">Service ProviderRecommendation System</h1>
+<body style="background-color: #EAEFEF;">
+    <h1 style="text-align: center; color: #000080; font-family: 'Cambria Math';">Service Provider Recommendation System</h1>
+    <form action="/predict" method="post">
+        <label for="issue">Issue:</label>
+        <input type="text" id="issue" name="issue" placeholder="overheating"><br><br>
+        <label for="device">Device:</label>
+        <select name="device", id="device">
+            <option value="laptop">Laptop</option>
+            <option value="desktop">Desktop</option>
+            <option value="cctv">CCTV</option>
+            <option value="printer">Printer</option>
+            <option value="router">Router</option>
+        </select><br><br>
+        <label for="severity">Severity:</label>
+        <input type="radio" id="severity" name="severity" value="low">Low
+        <input type="radio" id="severity" name="severity" value="medium">Medium
+        <input type="radio" id="severity" name="severity" value="high">High<br><br>
+        <label for="urgent">Urgent:</label>
+        <input type="radio" id="urgent" name="urgent" value="yes">Yes
+        <input type="radio" id="urgent" name="urgent" value="no">No<br><br>
+        <label for="brand"> Brand: </label>
+        <select name="brand" id="brand">
+            <option value="">Select Brand</option>
+            <option value="Apple">Apple</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Dell">Dell</option>
+            <option value="HP">HP</option>
+            <option value="Lenovo">Lenovo</option>
+            <option value="Asus">Asus</option>
+            <option value="Acer">Acer</option>
+            <option value="Canon">Canon</option>
+            <option value="Printer">Printer</option>
+            <option value="Router">Router</option>
+        </select><br><br>
+        <label for="device_age_years">Device Age (years):</label>
+        <input type="number" id="device_age_years" name="device_age_years" placeholder="2.5"><br><br>
+        <label for="service_type">Service Type:</label>
+        <select name="service_type" id="service_type">
+            <option value="home_service">Home Service</option>
+            <option value="shop_visit">Shop Visit</option>
+        </select><br><br>
+        <label for="warranty_status">Warranty Status:</label>
+        <select name="warranty_status" id="warranty_status">
+            <option value="in_warranty">In Warranty</option>
+            <option value="out_of_warranty">Out of Warranty</option>
+        </select><br><br>
+        <label for="city_tier">City Tier:</label>
+        <select name="city_tier" id="city_tier">
+            <option value="tier1">Tier 1</option>
+            <option value="tier2">Tier 2</option>
+            <option value="tier3">Tier 3</option>
+        </select><br><br>
+        <label for="technician_experience">Technician Experience (years):</label>
+        <input type="number" id="technician_experience" name="technician_experience" placeholder="5"><br><br>
+        <input type="submit" value="Predict">
+    </form>
 </body>
 </html>
