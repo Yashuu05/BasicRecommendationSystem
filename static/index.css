@@ -244,3 +244,80 @@ select {
     background-size: 1.2rem;
     padding-right: 3rem;
 }
+
+/* Results Section */
+.results-section {
+    margin-top: 3rem;
+    animation: fadeIn 1s ease;
+}
+
+.price-highlight {
+    text-align: center;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid var(--primary);
+}
+
+.price-value {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-top: 0.5rem;
+    text-shadow: 0 0 20px rgba(8, 203, 0, 0.3);
+}
+
+.providers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.provider-card {
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.provider-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+.provider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.badge {
+    background: var(--primary);
+    color: var(--bg-dark);
+    padding: 0.2rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.provider-info p {
+    text-align: left;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.error-msg {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

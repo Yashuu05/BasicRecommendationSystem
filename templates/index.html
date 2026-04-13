@@ -132,7 +132,43 @@
                 </div>
             </form>
         </section>
+
+        {% if error %}
+        <div class="error-msg glass-card">
+            <p>⚠️ {{ error }}</p>
+        </div>
+        {% endif %}
+
+        {% if results %}
+        <section id="results" class="results-section">
+            <div class="price-highlight glass-card">
+                <h3>Estimated Service Cost</h3>
+                <div class="price-value">INR {{ "%.2f"|format(estimated_price) }}</div>
+            </div>
+
+            <div class="providers-grid">
+                {% for provider in results %}
+                <div class="provider-card glass-card">
+                    <div class="provider-header">
+                        <h4>{{ provider.provider_name }}</h4>
+                        <div class="badge">Score: {{ provider.score }}</div>
+                    </div>
+                    <div class="provider-info">
+                        <p>⭐ <span>{{ provider.rating }} Rating</span></p>
+                        <p>📍 <span>{{ provider.distance_km }} km away</span></p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
     </main>
+
+    {% if scroll_to_results %}
+    <script>
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    </script>
+    {% endif %}
 </body>
 
 </html>

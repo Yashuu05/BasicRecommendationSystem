@@ -93,3 +93,48 @@ def run_full_pipeline(user_text, price_model, recommend_model):
                     }) 
         
     return { "input": user_text, "parsed": nlp_result, "estimated_price": price, "top_providers": result } 
+
+
+def run_full_pipeline_structured(form_data, price_model, recommend_model):
+    """
+    Runs the full prediction and recommendation pipeline using structured form data.
+    """
+    # Step 1: Prepare price prediction input
+    # Ensure all required keys for price_model are present
+    price = predict_price(input_data=form_data, model=price_model)
+    
+    # Step 2: Generate mock providers (in a real app, this would query a DB)
+    providers = generate_providers(n=8)
+    
+    # Step 3: Prepare recommendation ranking input
+    rec_input = []
+    for provider in providers:
+        row = {
+            "issue": form_data["issue"],
+            "device": form_data["device"],
+            "severity": form_data["severity"],
+            "urgent": form_data["urgent"],
+            **provider
+        }
+        rec_input.append(row)
+    
+    df = pd.DataFrame(rec_input)
+    
+    # Step 4: Rank providers
+    ranked = predict_recommendation(input_data=df, model=recommend_model, top_k=3)
+    
+    # Step 5: Format results
+    result = []
+    for _, row in ranked.iterrows():
+        result.append({
+            "provider_name": row["provider_name"],
+            "rating": row["rating"],
+            "distance_km": row["distance_km"],
+            "score": round(row["score"], 2),
+            "estimated_price": float(price)
+        })
+        
+    return {
+        "estimated_price": price,
+        "top_providers": result
+    }
