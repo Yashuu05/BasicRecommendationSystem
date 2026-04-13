@@ -1,62 +1,138 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <title>Basic Recommendation System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Recommendation | Smart Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="background-color: #EAEFEF;">
-    <h1 style="text-align: center; color: #000080; font-family: 'Cambria Math';">Service Provider Recommendation System</h1>
-    <form action="/predict" method="post">
-        <label for="issue">Issue:</label>
-        <input type="text" id="issue" name="issue" placeholder="overheating"><br><br>
-        <label for="device">Device:</label>
-        <select name="device", id="device">
-            <option value="laptop">Laptop</option>
-            <option value="desktop">Desktop</option>
-            <option value="cctv">CCTV</option>
-            <option value="printer">Printer</option>
-            <option value="router">Router</option>
-        </select><br><br>
-        <label for="severity">Severity:</label>
-        <input type="radio" id="severity" name="severity" value="low">Low
-        <input type="radio" id="severity" name="severity" value="medium">Medium
-        <input type="radio" id="severity" name="severity" value="high">High<br><br>
-        <label for="urgent">Urgent:</label>
-        <input type="radio" id="urgent" name="urgent" value="yes">Yes
-        <input type="radio" id="urgent" name="urgent" value="no">No<br><br>
-        <label for="brand"> Brand: </label>
-        <select name="brand" id="brand">
-            <option value="">Select Brand</option>
-            <option value="Apple">Apple</option>
-            <option value="Samsung">Samsung</option>
-            <option value="Dell">Dell</option>
-            <option value="HP">HP</option>
-            <option value="Lenovo">Lenovo</option>
-            <option value="Asus">Asus</option>
-            <option value="Acer">Acer</option>
-            <option value="Canon">Canon</option>
-            <option value="Printer">Printer</option>
-            <option value="Router">Router</option>
-        </select><br><br>
-        <label for="device_age_years">Device Age (years):</label>
-        <input type="number" id="device_age_years" name="device_age_years" placeholder="2.5"><br><br>
-        <label for="service_type">Service Type:</label>
-        <select name="service_type" id="service_type">
-            <option value="home_service">Home Service</option>
-            <option value="shop_visit">Shop Visit</option>
-        </select><br><br>
-        <label for="warranty_status">Warranty Status:</label>
-        <select name="warranty_status" id="warranty_status">
-            <option value="in_warranty">In Warranty</option>
-            <option value="out_of_warranty">Out of Warranty</option>
-        </select><br><br>
-        <label for="city_tier">City Tier:</label>
-        <select name="city_tier" id="city_tier">
-            <option value="tier1">Tier 1</option>
-            <option value="tier2">Tier 2</option>
-            <option value="tier3">Tier 3</option>
-        </select><br><br>
-        <label for="technician_experience">Technician Experience (years):</label>
-        <input type="number" id="technician_experience" name="technician_experience" placeholder="5"><br><br>
-        <input type="submit" value="Predict">
-    </form>
+
+<body>
+    <div class="background-animation"></div>
+    <main class="container">
+        <header class="glass-card header-section">
+            <h1>Service Provider Recommendation</h1>
+            <p>Enter device details to get an AI-powered technician recommendation</p>
+        </header>
+
+        <section class="glass-card form-section">
+            <form action="/predict" method="post" class="prediction-form">
+                <div class="form-grid">
+                    <!-- Issue & Device -->
+                    <div class="form-group">
+                        <label for="issue">Describe the Issue</label>
+                        <input type="text" id="issue" name="issue" placeholder="my lpatop is overheating urgently."
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="device">Device Category</label>
+                        <select name="device" id="device" required>
+                            <option value="laptop">Laptop</option>
+                            <option value="desktop">Desktop</option>
+                            <option value="cctv">CCTV</option>
+                            <option value="printer">Printer</option>
+                            <option value="router">Router</option>
+                        </select>
+                    </div>
+
+                    <!-- Severity & Urgent -->
+                    <div class="form-group radio-group">
+                        <label>Issue Severity</label>
+                        <div class="radio-options">
+                            <label class="radio-label">
+                                <input type="radio" name="severity" value="low" checked> <span>Low</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="severity" value="medium"> <span>Medium</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="severity" value="high"> <span>High</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group radio-group">
+                        <label>Urgency Level</label>
+                        <div class="radio-options">
+                            <label class="radio-label">
+                                <input type="radio" name="urgent" value="yes"> <span>Urgent</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="urgent" value="no" checked> <span>Normal</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Brand & Age -->
+                    <div class="form-group">
+                        <label for="brand">Device Brand</label>
+                        <select name="brand" id="brand" required>
+                            <option value="" disabled selected>Select Brand</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Dell">Dell</option>
+                            <option value="HP">HP</option>
+                            <option value="Lenovo">Lenovo</option>
+                            <option value="Asus">Asus</option>
+                            <option value="Acer">Acer</option>
+                            <option value="Canon">Canon</option>
+                            <option value="Printer">Printer</option>
+                            <option value="Router">Router</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="device_age_years">Device Age (Years)</label>
+                        <input type="number" step="0.1" id="device_age_years" name="device_age_years"
+                            placeholder="e.g. 2.5" required>
+                    </div>
+
+                    <!-- Service Type & Warranty -->
+                    <div class="form-group">
+                        <label for="service_type">Preferred Service</label>
+                        <select name="service_type" id="service_type">
+                            <option value="home_service">Home Service</option>
+                            <option value="shop_visit">Shop Visit</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="warranty_status">Warranty Status</label>
+                        <select name="warranty_status" id="warranty_status">
+                            <option value="in_warranty">In Warranty</option>
+                            <option value="out_of_warranty">Out of Warranty</option>
+                        </select>
+                    </div>
+
+                    <!-- City & Experience -->
+                    <div class="form-group">
+                        <label for="city_tier">City Tier</label>
+                        <select name="city_tier" id="city_tier">
+                            <option value="tier1">Tier 1 (Metro)</option>
+                            <option value="tier2">Tier 2</option>
+                            <option value="tier3">Tier 3</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="technician_experience">Min. Technician Exp (Years)</label>
+                        <input type="number" id="technician_experience" name="technician_experience"
+                            placeholder="e.g. 5" required>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <button type="submit" class="submit-btn">
+                        <span>Get Recommendation</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
 </body>
+
 </html>
