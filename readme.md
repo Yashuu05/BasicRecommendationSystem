@@ -6,8 +6,8 @@
 
 ## About
 
-- This project is an AI-powered service recommendation system that helps users find the best local technicians (e.g., laptop repair, WiFi setup, CCTV installation) based on their problem description.
-- The system uses Natural Language Processing (NLP) to understand user queries and leverages Machine Learning models to:
+- This project is a **service recommendation system** that helps users find the best local technicians based on their problem description.
+- The system uses machine learning algorithms to:
 
 1. Recommend the best service providers.
 2. Predict estimated service cost.
@@ -66,16 +66,17 @@ BasicRecommendationSystem/
 |
 |__ models/
 |      |__ PricePrediction/
-|              |__ best_model.pkl
+|      |       |__ best_model.pkl  # saved weights
 |      |__ Recommendation/
-|              |__ best_model.pkl
-|      |__ results/
+|      |       |__ best_model.pkl  # saved weights
+|      |__ results/      # analysis of model training
 |              |__ pric_prediction_result.csv
 |              |__ price_performance.png
 |              |__ recommendation_result.csv
 |              |__ recommendation_preformance.png
 |
 |__ notebooks/
+|         |__ EDA.ipynb
 |
 ├── scripts/
 |     |__ price_prediction_script.py
@@ -112,7 +113,9 @@ BasicRecommendationSystem/
 |       |__  ollama_chat.py
 |
 │__ static/
+|        |__ index.css
 |__ templates/
+|        |__ index.html
 ├── requirements.txt
 ├── readme.md
 |__ .gitignore
@@ -227,9 +230,9 @@ max_features": ["sqrt", "log2"]
 ## Acknowledgement
 
 - Scikit-learn documentation
-- spaCy NLP library
 - Open-source ML community
 - Kaggle (for dataset inspiration)
+- Ollama (for open source LLM)
 
 ## Machine Learning Algorithms used
 
