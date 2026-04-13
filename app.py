@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from src.utils.model_utils import load_model
 from src.pipelines.full_pipeline import run_full_pipeline_structured
-import os
+from src.nlp.nlp_extracter import extract_entities
 
 app = Flask(__name__)
 
@@ -29,12 +29,16 @@ def index():
 def predict():
     if request.method == "POST":
         try:
+            # get user input
+            user_text = request.form.get("issue")
+            # extract the keywords from iuser text
+            extracted_input = extract_entities(text=user_text)
             # Capture input from form
             form_data = {
-                "issue": request.form.get("issue"),
-                "device": request.form.get("device"),
-                "severity": request.form.get("severity"),
-                "urgent": request.form.get("urgent"),
+                "issue": extracted_input["issue"],
+                "device": extracted_input['device'],
+                "severity": extracted_input['severity'],
+                "urgent": extracted_input['urgent'],
                 "brand": request.form.get("brand"),
                 "device_age_years": float(request.form.get("device_age_years", 0)),
                 "service_type": request.form.get("service_type"),

@@ -131,7 +131,10 @@ def run_full_pipeline_structured(form_data, price_model, recommend_model):
             "rating": row["rating"],
             "distance_km": row["distance_km"],
             "score": round(row["score"], 2),
-            "estimated_price": float(price)
+            "estimated_price": float(price),
+            "success_rate":float(row["success_rate"]),
+            "response_time_min":float(row["response_time_min"]),
+            "experience_years": float(row["experience_years"])
         })
         
     return {

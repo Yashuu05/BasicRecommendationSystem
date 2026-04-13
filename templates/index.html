@@ -23,47 +23,8 @@
                     <!-- Issue & Device -->
                     <div class="form-group">
                         <label for="issue">Describe the Issue</label>
-                        <input type="text" id="issue" name="issue" placeholder="my lpatop is overheating urgently."
+                        <input type="text" id="issue" name="issue" placeholder="my laptop is overheating urgently."
                             required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="device">Device Category</label>
-                        <select name="device" id="device" required>
-                            <option value="laptop">Laptop</option>
-                            <option value="desktop">Desktop</option>
-                            <option value="cctv">CCTV</option>
-                            <option value="printer">Printer</option>
-                            <option value="router">Router</option>
-                        </select>
-                    </div>
-
-                    <!-- Severity & Urgent -->
-                    <div class="form-group radio-group">
-                        <label>Issue Severity</label>
-                        <div class="radio-options">
-                            <label class="radio-label">
-                                <input type="radio" name="severity" value="low" checked> <span>Low</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="severity" value="medium"> <span>Medium</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="severity" value="high"> <span>High</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group radio-group">
-                        <label>Urgency Level</label>
-                        <div class="radio-options">
-                            <label class="radio-label">
-                                <input type="radio" name="urgent" value="yes"> <span>Urgent</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="urgent" value="no" checked> <span>Normal</span>
-                            </label>
-                        </div>
                     </div>
 
                     <!-- Brand & Age -->
@@ -154,8 +115,24 @@
                         <div class="badge">Score: {{ provider.score }}</div>
                     </div>
                     <div class="provider-info">
-                        <p>⭐ <span>{{ provider.rating }} Rating</span></p>
-                        <p>📍 <span>{{ provider.distance_km }} km away</span></p>
+                        <div class="stats-row">
+                            <span class="stat-item" title="Rating">⭐ {{ provider.rating }}</span>
+                            <span class="stat-item" title="Distance">📍 {{ provider.distance_km }}km</span>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <span class="stat-label">Success Rate</span>
+                                <span class="stat-value">{{ (provider.success_rate * 100)|round|int }}%</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Experience</span>
+                                <span class="stat-value">{{ provider.experience_years }} Yrs</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Resp. Time</span>
+                                <span class="stat-value">{{ provider.response_time_min }} Min</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
