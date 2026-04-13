@@ -86,9 +86,10 @@
                 </div>
 
                 <div class="form-footer">
-                    <button type="submit" class="submit-btn">
-                        <span>Get Recommendation</span>
+                    <button type="submit" class="submit-btn" id="submit-btn" onclick="showLoader()">
+                        <span id="btn-text">Get Recommendation</span>
                         <div class="btn-glow"></div>
+                        <div id="loader" class="loader-spinner" style="display: none;"></div>
                     </button>
                 </div>
             </form>
@@ -137,13 +138,69 @@
                 </div>
                 {% endfor %}
             </div>
+
+            <!-- AI Explanation Container -->
+            <div class="ai-explanation-container glass-card" id="ai-box">
+                <div class="ai-header">
+                    <span class="ai-icon">🤖</span>
+                    <h3>AI Recommendation Insight</h3>
+                </div>
+                <div class="ai-content" id="ai-explanation">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
         </section>
         {% endif %}
     </main>
 
+    <script>
+        function showLoader() {
+            document.getElementById('btn-text').style.opacity = '0';
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('submit-btn').disabled = true;
+            document.querySelector('.prediction-form').submit();
+        }
+    </script>
+
     {% if scroll_to_results %}
+    <!-- Server-side data passed to client-side JS -->
+    <script type="application/json" id="ai-results-data">
+        {{ results|tojson|safe }}
+    </script>
+    <script type="application/json" id="ai-query-data">
+        {{ user_query|tojson|safe }}
+    </script>
+
     <script>
         document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+        // Start AI Streaming
+        const resultsData = JSON.parse(document.getElementById('ai-results-data').textContent);
+        const query = JSON.parse(document.getElementById('ai-query-data').textContent);
+        const aiExplanationDiv = document.getElementById('ai-explanation');
+
+        async function fetchExplanation() {
+            try {
+                const response = await fetch(`/stream_explanation?query=${encodeURIComponent(query)}&results=${encodeURIComponent(JSON.stringify(resultsData))}`);
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                aiExplanationDiv.innerHTML = ''; // Clear indicator
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    const chunk = decoder.decode(value, { stream: true });
+                    aiExplanationDiv.innerText += chunk;
+                }
+            } catch (error) {
+                aiExplanationDiv.innerHTML = '<p class="error">Failed to generate AI explanation.</p>';
+            }
+        }
+
+        setTimeout(fetchExplanation, 1000); // Small delay for smooth entry
     </script>
     {% endif %}
 </body>

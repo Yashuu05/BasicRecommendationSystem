@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response, stream_with_context
 from src.utils.model_utils import load_model
 from src.pipelines.full_pipeline import run_full_pipeline_structured
 from src.nlp.nlp_extracter import extract_entities
+from src.utils.ollama_chat import stream_chat
+import os
+import json
 
 app = Flask(__name__)
 
@@ -58,6 +61,7 @@ def predict():
             return render_template("index.html", 
                                  results=results["top_providers"], 
                                  estimated_price=results["estimated_price"],
+                                 user_query=user_text,
                                  scroll_to_results=True)
             
         except Exception as e:
@@ -65,6 +69,25 @@ def predict():
 
     return render_template("index.html")
 
+@app.route("/stream_explanation")
+def stream_explanation():
+    user_query = request.args.get("query")
+    results_json = request.args.get("results")
+    
+    if not user_query or not results_json:
+        return "Missing data", 400
+
+    system_instruction = f"""You are a 'Service Provider Recommendation System' who is responsible to recommend 
+    service provider to the user from the given recommendation data. Your output should be 'Provider name' and 'reason'.
+    Explain the user the reason behind the recommended provider by refering from given data. Do not ask any follow up question to the user.
+    Recommendation data: {results_json}
+    User query: {user_query}"""
+
+    def generate():
+        for chunk in stream_chat(instruction_prompt=system_instruction, input_query=user_query):
+            yield chunk
+
+    return Response(stream_with_context(generate()), mimetype='text/plain')
+
 if __name__ == "__main__":
     app.run(debug=True)
-
